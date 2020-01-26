@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CATSettings", "CATSettings\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleParse", "ExampleParse\ExampleParse.csproj", "{F1639362-6663-4450-A501-D83B44BA3611}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CATSettingsLib", "CATSettingsLib\CATSettingsLib.csproj", "{C92186AD-15D9-47B6-AB09-DB51AD8B498D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F1639362-6663-4450-A501-D83B44BA3611}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1639362-6663-4450-A501-D83B44BA3611}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1639362-6663-4450-A501-D83B44BA3611}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C92186AD-15D9-47B6-AB09-DB51AD8B498D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C92186AD-15D9-47B6-AB09-DB51AD8B498D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C92186AD-15D9-47B6-AB09-DB51AD8B498D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C92186AD-15D9-47B6-AB09-DB51AD8B498D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

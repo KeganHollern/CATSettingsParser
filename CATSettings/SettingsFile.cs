@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using YamlDotNet.Serialization;
 
 namespace CATSettings
 {
@@ -27,9 +28,37 @@ namespace CATSettings
         {
             return this.Parser.GetSettings();
         }
+        public string ToYAML()
+        {
+            //ya this somehow converts my json string into a valid object we can serialize??
+            object as_object = ConvertJTokenToObject(JsonConvert.DeserializeObject<JToken>(ToJSON()));
+
+            //serializer constructor
+            var serializer = new YamlDotNet.Serialization.Serializer();
+
+            //serialize our object to a string and return it
+            using (var writer = new StringWriter())
+            {
+                serializer.Serialize(writer, as_object);
+                var yaml = writer.ToString();
+
+                return yaml;
+            }
+        }
+        
+
+
+
+
         public string ToJSON()
         {
+            return GetJsonObject().ToString();
+        }
+        private JObject GetJsonObject()
+        {
             List<CATSetting> Settings = this.GetSettings().ToList();
+
+
 
             JObject result = new JObject(
                 new JProperty("File", this.ShortName),
@@ -47,7 +76,7 @@ namespace CATSettings
                     )
                 )
             );
-            return result.ToString();
+            return result;
         }
         private JProperty ParseRepository(CATSetting repo_setting)
         {
@@ -70,6 +99,17 @@ namespace CATSettings
                 )
             );
             return result;
+        }
+        // this is posted on here: https://stackoverflow.com/questions/36061049/how-to-convert-json-to-yaml-using-yamldotnet
+        private object ConvertJTokenToObject(JToken token)
+        {
+            if (token is JValue)
+                return ((JValue)token).Value;
+            if (token is JArray)
+                return token.AsEnumerable().Select(ConvertJTokenToObject).ToList();
+            if (token is JObject)
+                return token.AsEnumerable().Cast<JProperty>().ToDictionary(x => x.Name, x => ConvertJTokenToObject(x.Value));
+            throw new InvalidOperationException("Unexpected token: " + token);
         }
     }
 }

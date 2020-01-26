@@ -1,77 +1,101 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using YamlDotNet.Serialization;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
 
-namespace CATSettings.DataTypes
+namespace CATSettingsLib.SettingTypes
 {
-    public class CATSetting
+    public class Setting
     {
-        protected int NameEndIndex = -1;
-        public byte[] Raw { get; protected set; }
+        protected int InternalDataStartIndex;
+        public byte[] Binary { get; protected set; }
         public string DataType { get; }
         public string FieldName { get; }
+
         public bool HasValue { get; }
 
-        public virtual string GetValue()
-        {
-            return "Unknown Value";
-        }
-        public virtual void WriteToRaw(object new_data) { }
+        public bool IsKnownDatatype { get; protected set; }
 
-        public CATSetting(byte[] data)
+        public Setting(byte[] data)
         {
-            this.Raw = data;
+            this.IsKnownDatatype = false;
+            this.Binary = data;
 
+            if (data.Length == 0)
+            {
+                HasValue = false;
+                DataType = "NULL";
+                FieldName = "NULL";
+                return;
+            }
+
+            //--- extract datatype string
             int start = 0;
             int len = (int)data[start + 1];
             int index = start + 2;
             this.DataType = Encoding.ASCII.GetString(data, index, len).Trim('\0');
 
+            //--- extract the field name (some CATSettings objects are invalid in their object structure so this gets a bit complex)
             start = index + len;
             if (data[start] == 0x34)
             {
                 len = (int)data[start + 1];
                 index = start + 2;
                 this.FieldName = Encoding.ASCII.GetString(data, index, len).Trim('\0');
-            } 
+            }
             else
             {
                 //NOTE: Assembly.CATSettings / UdpAuto (last entry) does not contain a valid fieldname header
                 //find next 0x34 (header)
                 int next;
-                for(next = start + 1; next < Raw.Length; next++)
+                for (next = start + 1; next < data.Length; next++)
                 {
-                    if(data[next] == 0x34)
+                    if (data[next] == 0x34)
                     {
                         break;
                     }
                 }
-                if(next == Raw.Length) //some how this entire field is corrupt, assume false
+                if (next == data.Length) //some how this entire field is corrupt, assume false
                 {
                     throw new Exception("Field data invalid");
                 }
-                //next = index + len
                 index = start + 1;
                 len = next - index;
                 this.FieldName = Encoding.ASCII.GetString(data, index, len).Trim('\0');
             }
-            this.NameEndIndex = index + len;
 
+            //--- save the index where we start our internal data structure
+            this.InternalDataStartIndex = index + len;
+
+            //--- check the "has value" byte
             int value_index = index + len + 18;
             byte value_flag = data[value_index];
             this.HasValue = value_flag == 0x1;
         }
 
-        public static CATSetting ParseEntry(byte[] data)
+        public virtual string GetValue()
         {
+            throw new Exception("Cannot get the value of an unknown datatype");
+        }
+        public virtual void SetValue(object obj)
+        {
+            throw new Exception("Cannot set the value of an unknown datatype");
+        }
+
+
+
+        public static Setting ParseEntry(byte[] data)
+        {
+            if (data.Length == 0)
+                return new Setting(data);
+
             int start = 0;
             int len = (int)data[start + 1];
             int index = start + 2;
             string datatype = Encoding.ASCII.GetString(data, index, len).Trim('\0');
 
-            CATSetting entry;
+            Setting entry;
             switch (datatype)
             {
 
@@ -113,15 +137,15 @@ namespace CATSettings.DataTypes
                     }
                 case "CATSettingRepository":
                     {
-                        entry = new CATSettingRepository(data);
+                        entry = new SettingRepository(data);
                         break;
                     }
+                    //--- these datatypes we do not have the information to handle
                 case "long":
-                //TODO: catia datatypes
                 case "CATHeaderAttributes":
                 default:
                     {
-                        entry = new CATSetting(data);
+                        entry = new Setting(data);
                         break;
                     }
             }

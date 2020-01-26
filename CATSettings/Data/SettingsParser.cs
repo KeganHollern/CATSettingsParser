@@ -9,8 +9,8 @@ namespace CATSettings.Data
 {
     class SettingsParser
     {
-        
-        
+
+        private byte[] RawSource;
         private byte[] RawData;
         public SettingsParser(string settings_path)
         {
@@ -19,6 +19,7 @@ namespace CATSettings.Data
                 throw new Exception("SettingsParser can only be used on files with the .CATSettings extension!");
             }
             byte[] source = File.ReadAllBytes(settings_path);
+            RawSource = source;
             source = strip_file_header(source);
             source = strip_file_footer(source);
             RawData = source;
@@ -81,7 +82,11 @@ namespace CATSettings.Data
         private byte[] strip_file_header(byte[] bytes)
         {
             List<byte> values = bytes.ToList();
-            values.RemoveRange(0, (16 * 8) - 2); //remove file header
+            values.RemoveRange(0, 16 * 3);
+            values.RemoveRange(0, 5);
+            int data_length_flag = (int)values[0]; //this flag increments as more bytes are added (for example string lengths are changed)
+            values.RemoveRange(0, 11);
+            values.RemoveRange(0, (16 * 4) - 2); //remove file header
 
             values.RemoveRange(0, 28); //remove "CATSettingRepository" entry 
 
