@@ -20,8 +20,8 @@ namespace ExampleParse
 
 
             
-            Write_Test(args); //--- passed (double, string)
-            //DumpYaml_Test(args); //--- passed
+            //Write_Test(args); //--- passed (double, string)
+            DumpYaml_Test(args); //--- passed
             Console.ReadKey();
         }
         static void Write_Test(string[] args)
@@ -56,7 +56,7 @@ namespace ExampleParse
                     dbl_set.Value = 6;
                 }
 
-                //---knowledge tests
+                //---Knowledge tests
                 if (setting.FieldName == "CATKnowledgeBuildPath")
                 {
                     StringSetting str_set = (StringSetting)setting;

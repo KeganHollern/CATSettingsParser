@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CATSettings", "CATSettings\CATSettings.csproj", "{C5A6A6FB-7D26-45B7-861F-3B94BB0449E5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleParse", "ExampleParse\ExampleParse.csproj", "{F1639362-6663-4450-A501-D83B44BA3611}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CATSettingsLib", "CATSettingsLib\CATSettingsLib.csproj", "{C92186AD-15D9-47B6-AB09-DB51AD8B498D}"
@@ -15,10 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C5A6A6FB-7D26-45B7-861F-3B94BB0449E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C5A6A6FB-7D26-45B7-861F-3B94BB0449E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C5A6A6FB-7D26-45B7-861F-3B94BB0449E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C5A6A6FB-7D26-45B7-861F-3B94BB0449E5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F1639362-6663-4450-A501-D83B44BA3611}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F1639362-6663-4450-A501-D83B44BA3611}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1639362-6663-4450-A501-D83B44BA3611}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -74,6 +74,10 @@ namespace CATSettingsLib
             {
                 SettingData original_data = SettingsData[i];
                 Setting new_data = Settings[i];
+                if(new_data is SettingRepository sr)
+                {
+                    sr.Save(); //flush our repository settings into their binary
+                }
 
                 int start = original_data.StartIndex;
                 int end = original_data.EndIndex;
@@ -165,8 +169,7 @@ namespace CATSettingsLib
         }
         private JProperty ParseRepository(Setting repo_setting)
         {
-            return new JProperty("Value", "Incomplete");
-            /*List<Setting> Settings = ((SettingRepository)repo_setting).GetSettings().ToList();
+            List<Setting> Settings = ((SettingRepository)repo_setting).Settings.ToList();
 
             JProperty result = new JProperty("Value",
                 new JObject(
@@ -184,7 +187,7 @@ namespace CATSettingsLib
                     )
                 )
             );
-            return result;*/
+            return result;
         }
         // this is posted on here: https://stackoverflow.com/questions/36061049/how-to-convert-json-to-yaml-using-yamldotnet
         private object ConvertJTokenToObject(JToken token)
