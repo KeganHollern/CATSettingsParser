@@ -19,10 +19,20 @@ namespace ExampleParse
 
 
 
-            
+            //Write_In_Session(args);
             //Write_Test(args); //--- passed (double, string)
             DumpYaml_Test(args); //--- passed
             Console.ReadKey();
+        }
+        static void Write_In_Session(string[] args)
+        {
+            string roaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string file = roaming + @"\DassaultSystemes\CATSettings\Knowledge.CATSettings";
+            SettingsFile CATSettingsFile = new SettingsFile(file);
+
+            StringSetting setting = (StringSetting)CATSettingsFile.FindSetting("CATKnowledgeBuildPath");
+            setting.Value = @"T:\TEST";
+            CATSettingsFile.Save();
         }
         static void Write_Test(string[] args)
         {

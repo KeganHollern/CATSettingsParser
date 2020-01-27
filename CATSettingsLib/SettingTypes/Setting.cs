@@ -24,10 +24,7 @@ namespace CATSettingsLib.SettingTypes
 
             if (data.Length == 0)
             {
-                HasValue = false;
-                DataType = "NULL";
-                FieldName = "NULL";
-                return;
+                throw new Exception("Cannot create setting from 0 bytes");
             }
 
             //--- extract datatype string

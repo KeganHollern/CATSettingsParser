@@ -71,16 +71,19 @@ namespace CATSettingsLib.SettingTypes
                     if (i != end_locations.Count)
                         end = end_locations[i];
 
-                    byte[] setting_data = bytes.GetRange(start, end - start).ToArray();
-                    SettingData setting_object = new SettingData();
-                    setting_object.StartIndex = start + binary_start;
-                    setting_object.EndIndex = end + binary_start;
-                    setting_object.Object = Setting.ParseEntry(setting_data);
-                    extracted_settings.Add(setting_object);
+                    if (start != (end - start))
+                    {
+                        byte[] setting_data = bytes.GetRange(start, end - start).ToArray();
+                        SettingData setting_object = new SettingData();
+                        setting_object.StartIndex = start + binary_start;
+                        setting_object.EndIndex = end + binary_start;
+                        setting_object.Object = Setting.ParseEntry(setting_data);
+                        extracted_settings.Add(setting_object);
+                    }
                 }
 
                 this.InternalData = extracted_settings.ToArray();
-                this.Settings = extracted_settings.Select((d) => Setting.ParseEntry((d.Object == null ? new byte[] { } : d.Object.Binary))).ToArray();//create deep copies of our objects so editing them does not effect our raw data
+                this.Settings = extracted_settings.Select((d) => Setting.ParseEntry(d.Object.Binary)).ToArray();//create deep copies of our objects so editing them does not effect our raw data
             }
             else
             {
@@ -118,6 +121,24 @@ namespace CATSettingsLib.SettingTypes
             }
             this.Binary = New_Binary.ToArray();
         }
+        
+
+        public Setting FindSetting(string field_name)
+        {
+            foreach(Setting s in Settings)
+            {
+                if (s.FieldName == field_name)
+                    return s;
+                if (s is SettingRepository sr)
+                {
+                    Setting result = sr.FindSetting(field_name);
+                    if (result != null)
+                        return result;
+                }
+            }
+            return null;
+        }
+
         public override string GetValue()
         {
             return "";

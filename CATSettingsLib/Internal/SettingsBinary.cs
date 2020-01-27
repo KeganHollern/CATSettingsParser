@@ -7,7 +7,7 @@ using CATSettingsLib.Extensibles;
 
 namespace CATSettingsLib.Internal
 {
-    public class SettingsBinary
+    class SettingsBinary
     {
         public byte[] Binary { get; set; }
 
