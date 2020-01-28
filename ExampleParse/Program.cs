@@ -17,12 +17,20 @@ namespace ExampleParse
         static void Main(string[] args)
         {
 
-
-
-            //Write_In_Session(args);
+            Read_In_Session(args);  //--- passed
+            //Write_In_Session(args); //--- failed, catia cache's our settings (note that the CATSettings file is written to, but catia does not use the new value)
             //Write_Test(args); //--- passed (double, string)
-            DumpYaml_Test(args); //--- passed
+            //DumpYaml_Test(args); //--- passed
             Console.ReadKey();
+        }
+        static void Read_In_Session(string[] args)
+        {
+            string roaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string file = roaming + @"\DassaultSystemes\CATSettings\Knowledge.CATSettings";
+            SettingsFile CATSettingsFile = new SettingsFile(file);
+
+            StringSetting setting = (StringSetting)CATSettingsFile.FindSetting("CATKnowledgeBuildPath");
+            Console.WriteLine(setting.Value);
         }
         static void Write_In_Session(string[] args)
         {
