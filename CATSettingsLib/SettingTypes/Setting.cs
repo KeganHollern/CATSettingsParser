@@ -137,9 +137,15 @@ namespace CATSettingsLib.SettingTypes
                         entry = new SettingRepository(data);
                         break;
                     }
-                    //--- these datatypes we do not have the information to handle
+                //--- these datatypes we do not have the information to handle (therefore they will be read-only binary)
                 case "long":
                 case "CATHeaderAttributes":
+                case "CATCmdWorkshop":
+                    {
+                        entry = new DataOnlySetting(data);
+                        break;
+                    }
+                    
                 default:
                     {
                         entry = new Setting(data);

@@ -20,7 +20,7 @@ namespace CATSettingsLib.SettingTypes
             {
                 int start = this.InternalDataStartIndex;
                 int index = data.ToList().IndexOf(0x34, start + 18);
-                int binary_end = data.ToList().FindPattern(Patterns.FOOTER, index);
+                int binary_end = data.ToList().FindPattern(Patterns.FOOTER, Patterns.FOOTER_MASK, index);
                 index++;// 0x34
                 int len = (int)data[index];
                 index++;
@@ -55,7 +55,7 @@ namespace CATSettingsLib.SettingTypes
                 int result = 0;
                 do
                 {
-                    result = bytes.FindPattern(Patterns.TERMINATOR_INTERNAL, index);
+                    result = bytes.FindPattern(Patterns.TERMINATOR, Patterns.TERMINATOR_MASK, index);
                     index = result + Patterns.TERMINATOR_LENGTH;//get the index that every terminator ends at
 
                     if (result != -1)

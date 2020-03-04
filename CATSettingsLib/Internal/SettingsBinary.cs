@@ -68,7 +68,7 @@ namespace CATSettingsLib.Internal
                 int index = -1;
                 do
                 {
-                    index = values.FindPattern(Patterns.FOOTER, index + 1);
+                    index = values.FindPattern(Patterns.FOOTER, Patterns.FOOTER_MASK, index + 1);
                     if (index != -1)
                         last_index = index;
                 } while (index != -1);

@@ -53,6 +53,7 @@
     <Compile Include="SettingsFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingTypes\CharSetting.cs" />
+    <Compile Include="SettingTypes\DataOnlySetting.cs" />
     <Compile Include="SettingTypes\DoubleSetting.cs" />
     <Compile Include="SettingTypes\FloatSetting.cs" />
     <Compile Include="SettingTypes\IntSetting.cs" />

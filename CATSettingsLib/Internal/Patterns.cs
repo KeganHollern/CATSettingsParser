@@ -9,11 +9,12 @@ namespace CATSettingsLib.Extensibles
     static class Patterns
     {
         public static byte[] TERMINATOR = { 0x22, 0x10, 0x00, 0x00, 0x00, 0xE0, 0x02, 0x00, 0x00, 0x00, 0x00 };
-        public static byte[] TERMINATOR_INTERNAL = { 0x22, 0x00, 0x00, 0x00, 0x00, 0xE0, 0x02, 0x00, 0x00, 0x00, 0x00 };
+        public static string TERMINATOR_MASK = "x?xxxxxxxxx";
         public static byte[] FOOTER = { 0x34, 0x0E, 0x5F, 0x5F, 0x4E, 0x55, 0x4C, 0x4C, 0x5F, 0x50, 0x4F, 0x49, 0x4E };
+        public static string FOOTER_MASK = "xxxxxxxxxxxxx";
         public static int TERMINATOR_LENGTH { get { return TERMINATOR.Length; } }
 
-        public static int FindPattern(this List<byte> bytes, byte[] pattern, int start = 0)
+        public static int FindPattern(this List<byte> bytes, byte[] pattern, string mask, int start = 0)
         {
             for (int i = start; i < (bytes.Count - pattern.Length); i++) //don't iterate over the max length of terminator
             {
@@ -22,8 +23,9 @@ namespace CATSettingsLib.Extensibles
                 {
                     byte source_byte = bytes[i + j];
                     byte pattern_byte = pattern[j];
+                    char mask_char = mask[j];
 
-                    if (source_byte == pattern_byte)
+                    if (source_byte == pattern_byte || mask_char == '?')
                     {
                         if (j == pattern.Length - 1)
                         {

@@ -16,12 +16,34 @@ namespace ExampleParse
     {
         static void Main(string[] args)
         {
-
-            Read_In_Session(args);  //--- passed
+            Error_Check(args);
+            //Read_In_Session(args);  //--- passed
             //Write_In_Session(args); //--- failed, catia cache's our settings (note that the CATSettings file is written to, but catia does not use the new value)
             //Write_Test(args); //--- passed (double, string)
             //DumpYaml_Test(args); //--- passed
             Console.ReadKey();
+        }
+        static void Error_Check(string[] args)
+        {
+            Console.WriteLine("=== Scanning for errors ===");
+            int errors = 0;
+            string roaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string folder = roaming + @"\DassaultSystemes\CATSettings";
+            foreach(string file in Directory.EnumerateFiles(folder,"*.catsettings"))
+            {
+                string simple_name = Path.GetFileName(file);
+                try
+                {
+                    SettingsFile CATSettingsFile = new SettingsFile(file);
+                    string YAML = CATSettingsFile.ToYAML();
+                    Console.WriteLine($"No Error in '{simple_name}'.");
+                } catch
+                {
+                    Console.WriteLine($"ERROR READING '{simple_name}'.");
+                    errors++;
+                }
+            }
+            Console.WriteLine($"==== Scan Complete {errors} error{ (errors > 1 || errors == 0 ? "s" : "")} found ====");
         }
         static void Read_In_Session(string[] args)
         {

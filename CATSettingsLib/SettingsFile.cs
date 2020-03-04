@@ -39,7 +39,7 @@ namespace CATSettingsLib
             int result = 0;
             do
             {
-                result = bytes.FindPattern(Patterns.TERMINATOR, index);
+                result = bytes.FindPattern(Patterns.TERMINATOR, Patterns.TERMINATOR_MASK, index);
                 index = result + Patterns.TERMINATOR_LENGTH;//get the index that every terminator ends at
 
                 if (result != -1)
